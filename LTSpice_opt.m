@@ -3,12 +3,13 @@ close all;
 fclose('all');
 
 
-global passCell; % used to pass vars to functions without needing lots of globals
+global passCell; % used to pass vars to the opt function without needing lots of individual globals
 
 
 example = 1; 
 % set to 1 or 2 to run the supplied examples. Used in setTarget.m and simControl.m
-% passed to simControl. Set to 0 when not using example files (user must supply schem name in simControl.m)
+% passed to simControl. 
+% Set to 0 when not using example files (user must modify simControl.m and setTarget.m)
 
 
 % sources we are borrowing from;

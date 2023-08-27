@@ -1,11 +1,11 @@
 function simControl = simControl(example)
 
-% user-supplied file paths
+%% user-supplied file paths
 spicePath = 'C:\Program Files\LTC\LTspiceXVII\XVIIx64.exe'; % This is the path to your LT Spice installation
 filePath = 'C:\Users\radam\Documents\LTspiceXVII\'; %This is the path to the working LTSPICE folder (schems, netlists, simulation output files)
 % ******************************************************************* %
 
-% Examples 1 or 2 (see readme) **************************************
+%% Examples 1 or 2 (see readme) **************************************
 
 fprintf('example = %d\n',example);
 % ******************************************************************* %

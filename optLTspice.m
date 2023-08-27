@@ -137,7 +137,7 @@ err = target - optCurrent; % this is the error between target and the current fr
 
 err = err.*errWeights; % for frequency-dependent optimization, set in setTarget.m
 
-fprintf('\ncurrent rms freq resp error = %2.6e\n',rms(err));
+fprintf('\ncurrent rms error = %2.6e\n',rms(err));
 fclose('all');
 simCount = simCount+1;
 
