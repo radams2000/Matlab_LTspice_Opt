@@ -35,6 +35,8 @@ Calculating the effects of finite gain-bandwidth on the frequency response is qu
 
 The software may be downloaded using the link here.
 
+[MatlabLTspice_opt](https://github.com/radams2000/Matlab_LTspice_Opt/releases/latest)
+
 Download the zip file, and unzip in a directory on your computer. Move all the Matlab ".m" files to a directory where you will run Matlab. Move the LTspice ".asc" files to a directory where you will store your schematics. See the Readme.pdf file for detailed instruction on how to run the Matlab program. 
 
 
