@@ -21,13 +21,16 @@ Traditional filter design uses standard circuit topologies such as Sallen-and-Ke
 
 However, there are many cases where this approach fails;
 
-### **The desired filter shape is not a traditional shape such as Butterworth or Chebychev**.
+***The desired filter shape is not a traditional shape such as Butterworth or Chebychev***.
+
  For example, the filter may need to compensate for some other part of the system that has a non-flat frequency response, while simultaneously attenuating other frequency regions.
 
-### **The need to reduce power/area by combining multiple filter sections into a single op-amp circuit**.
+ ***The need to reduce power/area by combining multiple filter sections into a single op-amp circuit***.
+ 
 This leads to non-conventional circuit topologies that have very messy closed-loop formulas, and it becomes very difficult to solve for the component values. 
 
-### **The application operates at frequencies where finite op-amp gain-bandwidth degrades the frequency response**.
+ ***The application operates at frequencies where finite op-amp gain-bandwidth degrades the frequency response***.
+ 
 Calculating the effects of finite gain-bandwidth on the frequency response is quite complicated, especially in cases where the gain/phase response deviates from the traditional single-pole model. By running optimizer simulations in LTSpice, the actual target op-amp may be included in the simulation. This yields a solution that inherently attempts to compensate for finite gain-bandwidth effects.
 
 The software may be downloaded using the link here.
