@@ -30,3 +30,10 @@ This leads to non-conventional circuit topologies that have very messy closed-lo
 ### **The application operates at frequencies where finite op-amp gain-bandwidth degrades the frequency response**.
 Calculating the effects of finite gain-bandwidth on the frequency response is quite complicated, especially in cases where the gain/phase response deviates from the traditional single-pole model. By running optimizer simulations in LTSpice, the actual target op-amp may be included in the simulation. This yields a solution that inherently attempts to compensate for finite gain-bandwidth effects.
 
+
+The software may be downloaded using the link here.
+
+
+There are 2 zip files, one containing the Matlab code, and one containing a few sample LTspice schematics. Also you will find a Readme.pdf, that contains detailes instrucrions on how to set up and run your optimization schematics.
+
+
