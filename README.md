@@ -10,7 +10,7 @@ It works as follows;
   
 2) The user provides a list of which circuit instances the optimizer is allowed to vary.
   
-3) The optimizer then iteratively adjusts those component values, running a simulation for every pass through the lsqnonlin algorithm, in an attempt to reduce the error between the target frequency response and the simulated response.
+3) The optimizer then iteratively adjusts those component values, running a simulation for every pass through the lsqnonlin algorithm, in an attempt to reduce the error between the target frequency (and/or phase) response and the simulated response.
   
 4) Once the optimizer has finished, a new schematic is generated with the optimized component values. During the schematic generation process, each component value is quantized to a user-defined tolerance.
 
