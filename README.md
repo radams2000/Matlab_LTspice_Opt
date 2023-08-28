@@ -18,6 +18,7 @@ Why is this capability useful? Don't we already know how to design filters?
 
 Traditional filter design uses standard circuit topologies such as Sallen-and-Key or multiple-feedback op-amp based active filters. In these cases, given a "standard" filter shape such a Butterworth or Chebychev, a high-order filter may be factored into 2nd-order sections, and an op-amp circuit can be used for each of those sections. This design procedure is quite straightforward and has not changed for many years.
 
+
 However, there are many cases where this approach fails;
 
 ### **The desired filter shape is not a traditional shape such as Butterworth or Chebychev**.
