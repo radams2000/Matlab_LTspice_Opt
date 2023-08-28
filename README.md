@@ -35,6 +35,6 @@ Calculating the effects of finite gain-bandwidth on the frequency response is qu
 
 The software may be downloaded using the link here.
 
-There are 2 zip files, one containing the Matlab code, and one containing a few sample LTspice schematics. Also you will find a Readme.pdf, that contains detailed instrucrions on how to set up and run your optimization schematics.
+Download the zip file, and unzip in a directory on your computer. Move all the Matlab ".m" files to a directory where you will run Matlab. Move the LTspice ".asc" files to a directory where you will store your schenatics. See the Readme.pdf file for detailed instruction on how to run the Matlab program. 
 
 
