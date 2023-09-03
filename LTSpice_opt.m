@@ -3,6 +3,23 @@ close all;
 fclose('all');
 
 
+fprintf('******\n******\nCopyright (C) Robert Adams 2023\n******\n******');
+
+% LTSpice Optimizer
+% Copyright (C) Robert Adams 2023
+
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+
+
+
 global passCell; % used to pass vars to the opt function without needing lots of individual globals
 
 
