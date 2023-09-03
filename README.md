@@ -2,8 +2,13 @@
 Matlab optimizer with LTspice
 
 
-Written by Bob Adams, Analog Devices Inc.
-## LTSpice_opt is a Matlab program that uses an iterative optimization approach to design analog filters. 
+Written by Bob Adams
+Fellow Emeritus
+Analog Devices Inc.
+2023
+
+
+LTSpice_opt is a Matlab program that uses an iterative optimization approach to design analog filters. 
 It is designed to be used in conjunction with the popular circuit simulator LTspice. It embeds an LTSpice simulation inside the powerful Matlab nonlinear least-squares optimizer (lsqnonlin). 
 It works as follows;
 
@@ -36,7 +41,11 @@ Calculating the effects of finite gain-bandwidth on the frequency response is qu
 
 The software may be downloaded using the link here.
 
-There are 2 zip files, one containing the Matlab code, and one containing a few sample LTspice schematics. Also you will find a Readme.pdf, that contains detailed instrucrions on how to set up and run your optimization schematics.
+[MatlabLTspice_opt](https://github.com/radams2000/Matlab_LTspice_Opt/releases/latest)
+
+Download the zip file, and unzip in a directory on your computer. Move all the Matlab ".m" files to a directory where you will run Matlab. Move the LTspice ".asc" files to a directory where you will store your schematics. See the README.pdf file for detailed instructions on how to run the Matlab program. 
+
+The inspiration for this program came from a similar program written more than 40 years ago by Mark Davis, my co-worker at dbx Inc. The original was text-only and ran in a dos window, but was very useful for many audio applications where arbitrary frequency reposnses were required.
 
 
 
