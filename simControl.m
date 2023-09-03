@@ -1,4 +1,11 @@
-function simControl = simControl(example)
+function simControl = simControl()
+
+global example;
+
+example = 2;
+% set to 1 or 2 to run the supplied examples. Used in setTarget.m and simControl.m
+% Set to 0 when not using example files (user must modify simControl.m and setTarget.m)
+
 
 %% user-supplied file paths
 spicePath = 'C:\Program Files\LTC\LTspiceXVII\XVIIx64.exe'; % This is the path to your LT Spice installation
@@ -70,12 +77,7 @@ end
 
 
 
-%% set LTSpice_simTime
-% how long for Matlab to wait while an LTSpice sim completes. For fastest convergence, make as small as possible.
-% If the number of sim-restarts is more than a few percent of the number of
-% total simulations, increase this number
 
-LTSpice_simTime = 1.0;
 
 %% set the match mode. 
 % 1 = amplitude only
@@ -84,6 +86,7 @@ LTSpice_simTime = 1.0;
 
 matchMode = 1;
 
-simControl = {fileName spicePath filePath simControlOPtInstNames simControlMinVals simControlMaxVals simControlInstTol LTSpice_simTime LTSPice_output_node matchMode};
+% set return list
+simControl = {fileName spicePath filePath simControlOPtInstNames simControlMinVals simControlMaxVals simControlInstTol LTSPice_output_node matchMode};
 
 end

@@ -6,19 +6,16 @@ fclose('all');
 global passCell; % used to pass vars to the opt function without needing lots of individual globals
 
 
-example = 1; 
-% set to 1 or 2 to run the supplied examples. Used in setTarget.m and simControl.m
-% passed to simControl. 
-% Set to 0 when not using example files (user must modify simControl.m and setTarget.m)
-
-
 % sources we are borrowing from;
 % https://medium.com/@amattmiller/running-ltspice-from-matlab-630d551032cc.
 % https://www.mathworks.com/matlabcentral/fileexchange/48840-round-to-electronic-component-values
 
+% set options for least-squares algorithm
+options = optimoptions(@lsqnonlin);
+options.MaxFunctionEvaluations = 450; % don't run forever
+options.FunctionTolerance = 1e-4; % decrease this if you need a better match to target
 
-
-simControl = simControl(example); % read simulation control input file, filled out by user
+simControl = simControl(); % read simulation control input file, filled out by user
 
 fileName = simControl{1};
 spicePath = simControl{2};
@@ -28,19 +25,22 @@ simControlMinVals =  simControl{5};
 simControlMaxVals = simControl{6};
 simControlInstTol = simControl{7};
 simControlOPtInstNames = simControl{4};
-LTSpice_simTime = simControl{8}; % how long to wait for LTSPice to finish sim
-LTSpice_output_node = simControl{9};
-matchMode = simControl{10}; % 1 = ampl only, 2 = phase on;y, 3=both
+LTSpice_output_node = simControl{8};
+matchMode = simControl{9}; % 1 = ampl only, 2 = phase on;y, 3=both
 
 % the current Matlab files are in dropbox/matlab_cornell/matlab_ltspice
 
 % derived file paths and run scripts
 netlist_fname = sprintf('%s%s.net',filePath,fileName); % netlist filename
-RunLTstring = sprintf('start "LTspice" "%s" -b "%s%s.net"',spicePath, filePath, fileName);
+%RunLTstring = sprintf('start "LTspice" "%s" -b "%s%s.net"',spicePath, filePath, fileName);
+RunLTstring = sprintf('"%s" -b "%s%s.net"',spicePath, filePath, fileName);
+
 LTSpice_outputfile = sprintf('%s%s.raw', filePath,fileName);
 
-
-passCell = cell(18,1); % used to pass lots of variables at once into functions
+ % used to pass lots of variables at once into optLTspice and update_schematic
+ % I made it global because it's hard to pass extra variables into the
+ % least-squares evaluation function (it's possible but I got lazy ...)
+passCell = cell(18,1);
 passCell{1} = spicePath;
 passCell{2} = filePath;
 passCell{4} = fileName;
@@ -48,7 +48,6 @@ passCell{4} = fileName;
 passCell{10} = netlist_fname;
 passCell{12} = RunLTstring;
 passCell{13} = LTSpice_outputfile;
-passCell{16} = LTSpice_simTime;
 passCell{17} = LTSpice_output_node;
 passCell{18} = matchMode;
 
@@ -57,8 +56,7 @@ string = sprintf('"%s" -netlist "%s%s.asc"',spicePath, filePath, fileName);
 fprintf('Issuing command to write LTspice netlist\n%s\n',string);
 
 [status,cmdout] = system(string);
-
-pause(LTSpice_simTime);
+pause(0.5);
 
 
 
@@ -67,24 +65,22 @@ pause(LTSpice_simTime);
 fprintf('Issuing command to run initial LTspice simulation\n%s\n',RunLTstring);
 
 [status,cmdout] = system(RunLTstring);
-pause(LTSpice_simTime);
 if(status) 
-    fprintf('ERROR, LTSpice sim failed to run. Check setup or increase LTSpice_simTime\n ');
+    fprintf('ERROR, LTSpice sim failed to run.\n ');
     return;
 end
 
-try
-    result = LTspice2Matlab(LTSpice_outputfile); % parse output file
-catch
-    fprintf('ltspice2matlab error try again in 1/2 sec!\n');
-    pause(0.5);
-    result = LTspice2Matlab(LTSpice_outputfile); % parse output file
-end
+result = LTspice2Matlab(LTSpice_outputfile); % parse output file
 
 freqx = result.freq_vect;
 passCell{15} = freqx;
 
-% plot initial response
+
+% set the target response, using the frequencies that match the LTSpice sim (freqx)
+
+[target,errWeights] = setTarget(freqx,matchMode);
+
+% plot initial response vs target
 found_node=0;
 for i = 1:result.num_variables
     if strcmp(result.variable_name_list{i},LTSpice_output_node)
@@ -95,19 +91,39 @@ for i = 1:result.num_variables
         end
         if matchMode==1 % ampl only match
             figure;
-            semilogx(freqx,20*log10(fresp));
-            title('initial LTspice ampl response (dB) before optimization');
+            subplot(2,1,1), semilogx(freqx,20*log10(fresp),'g');
+            hold on;
+            subplot(2,1,1),semilogx(freqx,20*log10(target),'r');
+            ylabel('dB');
+            xlabel('freq');
+            title('target (r), initial LTspice (g)');
+            legend('LTspice initial sim','target');
+            subplot(2,1,2),semilogx(freqx,errWeights);
+            ylim([min(errWeights)-0.5 max(errWeights)+0.5]);
+            xlabel('freq')
+            title('error weights');
+
         end
         if matchMode==2 % phase only match
             figure;
-            semilogx(freqx,phase);
-            title('initial LTspice phase response (radians) before optimization');
+            subplot(2,1,1), semilogx(freqx,phase,'g');
+            hold on;
+            subplot(2,1,1),semilogx(freqx,target,'r');
+            ylabel('phase');
+            xlabel('freq');
+            title('target phase (r), initial LTspice phase (radians)');
+            legend('LTspice initial sim','target');
+            subplot(2,1,2),semilogx(freqx,errWeights);
+            ylim([min(errWeights)-0.5 max(errWeights)+0.5]);
+            xlabel('freq')
+            title('error weights');
+
         end
         if matchMode==3 % both phase and ampl match
             figure;
-            subplot(1,2,1),semilogx(freqx,20*log10(fresp)); 
+            subplot(2,1,1),semilogx(freqx,20*log10(fresp)); 
             title('initial LTspice freq response (dB) before optimization');
-            subplot(1,2,2),semilogx(freqx,phase); 
+            subplot(2,1,2),semilogx(freqx,phase); 
             title('initial LTspice phase response (radians) before optimization');
         end
     end
@@ -117,11 +133,9 @@ if(found_node==0)
     return;
 end
 
-% set the target response, using the frequencies that match the LTSpice sim (freqx)
 
-temp_return = setTarget(passCell,freqx,matchMode,example);
-target = temp_return{1};
-errWeights = temp_return{2};
+
+
 
 passCell{5} = target;
 passCell{3} = errWeights;
@@ -235,7 +249,7 @@ UB = UB./nomParams; % translate upper bounds into relative upper bounds
 LB = LB./nomParams; % translate lower bounds into relative lower bounds
 optParams = ones(numOptd,1); % the params used by the optimizer are multiplicative factors applied to the original components (in nomParams)
 
-X = lsqnonlin(@optLTspice,optParams, LB, UB); %************************************ OPT OPT OPT *******************
+X = lsqnonlin(@optLTspice,optParams, LB, UB,options); %************************************ OPT OPT OPT *******************
 
 passCell{14} = X;
 
@@ -250,7 +264,7 @@ end
 % re-run sim with current netlist
 
 system(RunLTstring);
-pause(LTSpice_simTime); 
+
 
 result = LTspice2Matlab(LTSpice_outputfile); % parse output file
 freqx = result.freq_vect;
@@ -271,7 +285,9 @@ fprintf('\n\nNew schematic with optimum component values generated\nFilename = %
 % re-run sim on the "_opt" schematic to check the quantization
 
 opt_schem_fname = sprintf('%s%s_opt.asc',filePath,fileName); % opt netlist filename
-RunLTstring_opt = sprintf('start "LTspice" "%s" -b "%s%s_opt.net"',spicePath, filePath, fileName);
+%RunLTstring_opt = sprintf('start "LTspice" "%s" -b %"%s%s_opt.net"',spicePath, filePath, fileName); % non-blocking
+RunLTstring_opt = sprintf('"%s" -b "%s%s_opt.net"',spicePath, filePath, fileName); % blocking
+
 LTSpice_outputfile_opt = sprintf('%s%s_opt.raw', filePath,fileName);
 
 
@@ -285,7 +301,7 @@ pause(0.1);
 % run sim on _Opt schematic
 fprintf('Issuing command to run LTspice sim on optmized netlist\n%s\n',RunLTstring_opt);
 [status,cmdout] = system(RunLTstring_opt);
-pause(LTSpice_simTime);
+pause(0.1)
 result = LTspice2Matlab(LTSpice_outputfile_opt); % parse output file
 pause(0.1)
 

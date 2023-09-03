@@ -1,6 +1,7 @@
 # Matlab_LTspice_Opt
 Matlab optimizer with LTspice
 
+
 Written by Bob Adams, Analog Devices Inc.
 ## LTSpice_opt is a Matlab program that uses an iterative optimization approach to design analog filters. 
 It is designed to be used in conjunction with the popular circuit simulator LTspice. It embeds an LTSpice simulation inside the powerful Matlab nonlinear least-squares optimizer (lsqnonlin). 
@@ -36,5 +37,23 @@ Calculating the effects of finite gain-bandwidth on the frequency response is qu
 The software may be downloaded using the link here.
 
 There are 2 zip files, one containing the Matlab code, and one containing a few sample LTspice schematics. Also you will find a Readme.pdf, that contains detailed instrucrions on how to set up and run your optimization schematics.
+
+
+
+
+License
+LTSpice Optimizer
+Copyright (C) Robert Adams 2023
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
 
 

@@ -163,6 +163,9 @@ omx =  ceil(max(pwr(idr)));
 % Extrapolate the PNS vector to cover all input values:
 pns = ns*10.^(omn-3:omx-1);
 pns = pns(:);
+
+% ns is Nx1,, 10.^(omn-3:omx-1) is 1X4, pns is Nx4, so want to mult kth
+% row in ns by kth col in temp
 %
 % Generate bin edge values:
 nmc = numel(rnd);
