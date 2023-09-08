@@ -39,9 +39,11 @@ This leads to non-conventional circuit topologies that have very messy closed-lo
  
 Calculating the effects of finite gain-bandwidth on the frequency response is quite complicated, especially in cases where the gain/phase response deviates from the traditional single-pole model. By running optimizer simulations in LTSpice, the actual target op-amp may be included in the simulation. This yields a solution that inherently attempts to compensate for finite gain-bandwidth effects.
 
-The software may be downloaded using the link here.
+The software may be downloaded using the link here, or on the Matlab file exchange site.
 
 [MatlabLTspice_opt](https://github.com/radams2000/Matlab_LTspice_Opt/releases/latest)
+
+[![View Matlab_LTspice_Opt on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/135036-matlab_ltspice_opt)
 
 Download the zip file, and unzip in a directory on your computer. Move all the Matlab ".m" files to a directory where you will run Matlab. Move the LTspice ".asc" files to a directory where you will store your schematics. See the README.pdf file for detailed instructions on how to run the Matlab program. 
 
