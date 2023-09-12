@@ -36,13 +36,14 @@ matchMode = passCell{18};
 
 
 for k=1:numOptd
-    netlist{OptLine(k)}(4) = cellstr(sprintf('%2.12e ',optParams(k)*nomParams(k)));
+    % netlist{OptLine(k)}(4) = cellstr(sprintf('%2.12e ',optParams(k)*nomParams(k)));
+     netlist{OptLine(k)}(4) = cellstr(sprintf('%2.12e ',nomParams(k)*exp(optParams(k)) ));
 end
 
 
 fprintf('\ncurrent component values\n');
 for k=1:numOptd
-    fprintf('%s %2.12e\n',char(netlist{OptLine(k)}(1)),optParams(k)*nomParams(k));
+    fprintf('%s %2.12e\n',char(netlist{OptLine(k)}(1)),nomParams(k)*exp(optParams(k)));
 
 end
 

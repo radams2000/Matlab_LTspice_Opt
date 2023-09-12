@@ -51,7 +51,8 @@ for k=1:numlines_schem
                 end
                 % next line has the value to change
                 changeNext=1;
-                instValNext = X(kk)*nomParams(kk);
+                % instValNext = X(kk)*nomParams(kk);
+                instValNext = nomParams(kk)*exp(X(kk));
                 roundStringNext = char(simControlInstTol(xx));
             end
         end

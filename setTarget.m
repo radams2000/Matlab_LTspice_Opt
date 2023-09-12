@@ -99,13 +99,19 @@ if example==2
     % title('errWeights');
 end
 
+
+
 %% Your circuit here, must set target and errWeights (vectors with size of freqx)
 %% In the case of matchMode==3 (match both ampl and phase), target and errWeights must have 2x the length of freqx
 % **************************************
 % ***************************************
 %
-
-
-
+if example==3
+    X = linspace(0, 80000, 21);  % every 4KHz from datasheet plot
+    VdB = [0, 0.5, 1, 1.5, 2, 3, 4.8, 7, 11, 17, 22, 13, 8, 5, 6, 4.5, 3, 2.5, 3, 3, 4.5];  % from datasheet plot, freq resp in dB
+    mic_dB = interp1(X,VdB,freqx);
+    mic_lin = 10.^(mic_dB / 20);
+    target = 30.0 ./ mic_lin;
+    errWeights = sqrt(mic_lin);  % greatest weights where the target is smallest
 
 end

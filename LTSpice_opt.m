@@ -2,11 +2,17 @@ clear all;
 close all;
 fclose('all');
 
-
 fprintf('******\n******\nCopyright (C) Robert Adams 2023\n******\n******');
 
 % LTSpice Optimizer
 % Copyright (C) Robert Adams 2023
+
+% Matlab optimizer for LTspice, Bob Adams, Fellow Emeritus, Analog Devices 2023 (C)
+% optimizer will adjust selected schematic components (designated in 'simControl.m')
+% in an attempt to match the target response, set in module 'setTarget.m'
+% User must modify these 2 files for a specific circuit (2 examples are
+% included)
+
 
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -17,6 +23,7 @@ fprintf('******\n******\nCopyright (C) Robert Adams 2023\n******\n******');
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
+
 
 
 
@@ -262,9 +269,15 @@ end
 passCell{8} = nomParams;
 
 fprintf('\n****************\n**************\nEntering Optimization Loop, please be patient ...\n************\n***********\n');
-UB = UB./nomParams; % translate upper bounds into relative upper bounds
-LB = LB./nomParams; % translate lower bounds into relative lower bounds
-optParams = ones(numOptd,1); % the params used by the optimizer are multiplicative factors applied to the original components (in nomParams)
+% UB = UB./nomParams; % translate upper bounds into relative upper bounds
+% LB = LB./nomParams; % translate lower bounds into relative lower bounds
+
+UB = log(UB)-log(nomParams);
+LB = log(LB)-log(nomParams);
+
+% optParams = ones(numOptd,1); % the params used by the optimizer are multiplicative factors applied to the original components (in nomParams)
+optParams = zeros(numOptd,1); % the params used by the optimizer are multiplicative factors applied to the original components (in nomParams)
+
 
 X = lsqnonlin(@optLTspice,optParams, LB, UB,options); %************************************ OPT OPT OPT *******************
 
@@ -273,7 +286,8 @@ passCell{14} = X;
 fprintf('\n*************\n************\nDONE! Generating outputs ...\n***********\n*********\n');
 
 for k=1:numOptd
-    fprintf('%s %2.12e\n',char(netlist{OptLine(k)}(1)),X(k)*nomParams(k));
+    % fprintf('%s %2.12e\n',char(netlist{OptLine(k)}(1)),X(k)*nomParams(k));
+    fprintf('%s %2.12e\n',char(netlist{OptLine(k)}(1)),nomParams(k)*exp(X(k)));
    
 end
 

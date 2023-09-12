@@ -2,7 +2,7 @@ function simControl = simControl()
 
 global example;
 
-example = 2;
+example = 1;
 % set to 1 or 2 to run the supplied examples. Used in setTarget.m and simControl.m
 % Set to 0 when not using example files (user must modify simControl.m and setTarget.m)
 
@@ -21,6 +21,9 @@ if example==1 % 3rd-order 1 op-amp lowpass
 end
 if example==2 % weird elliptic filter, 1 op-amp with an inductor
     fileName = 'example2'; % name of the LTSpice schematic you want to optimize (without the .asc)
+end
+if example==3 % weird elliptic filter, 1 op-amp with an inductor
+    fileName = 'example3'; % name of the LTSpice schematic you want to optimize (without the .asc)
 end
 
 % **** if example set to 0, user must fill in their own filename below ****
@@ -75,6 +78,13 @@ if example==2
     LTSPice_output_node = 'V(vout)';
 end
 
+if example==3
+    simControlOPtInstNames = {'R1' 'C1' 'L1' 'R7'};
+    simControlMinVals =      {10 100e-12 1e-6 10};
+    simControlMaxVals =      {1e6 1e-7 0.1 1e6};
+    simControlInstTol =     {'E96' 'E96' 'E96' 'E96'};
+    LTSPice_output_node = 'V(vout)';
+end
 
 
 
