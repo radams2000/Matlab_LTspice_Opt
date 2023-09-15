@@ -183,14 +183,11 @@ OptLine = zeros(numOptd,1); % an array that points to the netlist lines where th
 UB = zeros(numOptd,1); % upper bound for optimizer
 LB = zeros(numOptd,1); % lower bound for optimizer
 
+% find netlist lines that contain the variable instances
 kkk=1;
-for k = 1:numlines_netlist % go through lines
-    N=size(netlist{k},2);
-    thisLine = netlist{k};
-    % for each netlist line, check all the instance names that are being
-    % optimized, and if there is a match, save the line # in the netlist
-    % file so the optimizer knows what to vary
-    for kk = 1:numOptd
+for kk = 1:numOptd % go through the instances in ordrer
+   for k = 1:numlines_netlist % go through all netlist lines to look for instance. Instances stay in order of entry in setup function
+        thisLine = netlist{k};
         if contains(thisLine{1},char(simControlOPtInstName(kk)))
             OptLine(kkk)=k;
             UB(kkk) = cell2mat(simControlMaxVals(kk)); % upper bound to pass to optimizer
